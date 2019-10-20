@@ -5,8 +5,9 @@ class RescueMealApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Rescue Meal',
+      debugShowCheckedModeBanner: false,//to remove debug banner
       theme: new ThemeData(
-        primarySwatch: Colors.blue
+        primarySwatch: Colors.lightGreen
       ),
       home: new LoginPage(),
     );

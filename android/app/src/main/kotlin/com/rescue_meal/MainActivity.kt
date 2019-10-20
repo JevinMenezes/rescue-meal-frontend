@@ -1,4 +1,4 @@
-package com.example.rescue_meal
+package com.rescue_meal
 
 import android.os.Bundle
 

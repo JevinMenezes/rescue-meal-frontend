@@ -3,238 +3,107 @@ import 'package:flutter/material.dart';
 class RescueMealApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Rescue Meal',
-      debugShowCheckedModeBanner: false,//to remove debug banner
-      theme: new ThemeData(
-        primarySwatch: Colors.lightGreen
-      ),
-      home: new LoginPage(),
+      debugShowCheckedModeBanner: false, //to remove debug banner
+      theme: ThemeData(primarySwatch: Colors.lightGreen),
+      home: LoginScreen(),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => new _LoginPageState();
-}
-
-// Used for controlling whether the user is loggin or creating an account
-enum FormType {
-  login,
-  register
-}
-
-class _LoginPageState extends State<LoginPage> {
-
-  final TextEditingController _usernameFilter = new TextEditingController();
-  final TextEditingController _passwordFilter = new TextEditingController();
-  final TextEditingController _emailController = new TextEditingController();
-  String _username = "";
-  String _password = "";
-  String _email;
-  FormType _form = FormType.login; // our default setting is to login, and we should switch to creating an account when the user chooses to
-
-  _LoginPageState() {
-    _usernameFilter.addListener(__usernameListen);
-    _passwordFilter.addListener(_passwordListen);
-    _emailController.addListener(_emailListen);
-  }
-
-  void __usernameListen() {
-    if (_usernameFilter.text.isEmpty) {
-      _username = "";
-    } else {
-      _username = _usernameFilter.text;
-    }
-  }
-
-  void _passwordListen() {
-    if (_passwordFilter.text.isEmpty) {
-      _password = "";
-    } else {
-      _password = _passwordFilter.text;
-    }
-  }
-
-  void _emailListen() {
-    if (_emailController.text.isEmpty) {
-      _email = "";
-    } else {
-      _email = _emailController.text;
-    }
-  }
-
-  // Swap in between our two forms, registering and logging in
-  void _formChange () async {
-    setState(() {
-      if (_form == FormType.register) {
-        _form = FormType.login;
-      } else {
-        _form = FormType.register;
-      }
-    });
-  }
-
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: _buildBar(context),
-      body: new Container(
-        padding: EdgeInsets.all(16.0),
-        child: new Column(
-          children: <Widget>[
-            _buildTextFields(),
-            _buildButtons(),
-          ],
-        ),
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      resizeToAvoidBottomInset: true,
+      body: Column(
+        children: <Widget>[
+          Container(
+            child: _buildNameLogoCaption()
+          ),
+          Container(
+            child: _buildButtons()
+          ),
+          Container(
+            child: _buildFooter(),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildBar(BuildContext context) {
-    return new AppBar(
-      title: new Text("Login Page!"),
+  Widget _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text("LOGIN PAGE!"),
       centerTitle: true,
     );
   }
 
-  Widget _buildTextFields() {
-    if (_form == FormType.login) {
-      return new Container(
-        child: new Column(
-          children: <Widget>[
-            new Container(
-              child: new TextField(
-                controller: _usernameFilter,
-                decoration: new InputDecoration(
-                  labelText: 'Username'
-                ),
-              ),
-            ),
-            new Container(
-              child: new TextField(
-                controller: _passwordFilter,
-                decoration: new InputDecoration(
-                  labelText: 'Password'
-                ),
-                obscureText: true,
-              ),
-            )
-          ],
-        ),
-      );
-    }
-    else {
-      return new Container(
-        child: new Column(
-          children: <Widget>[
-            new Container(
-              child: new TextField(
-                controller: _usernameFilter,
-                decoration: new InputDecoration(
-                  labelText: 'Set Username'
-                ),
-              ),
-            ),
-            new Container(
-              child: new TextField(
-                decoration: new InputDecoration(
-                  labelText: 'Set Password'
-                ),
-                obscureText: true,
-              ),
-            ),
-            new Container(
-              child: new TextField(
-                decoration: new InputDecoration(
-                  labelText: 'Confirm Password'
-                ),
-                obscureText: true,
-              ),
-            ),
-            new Container(
-              child: new TextField(
-                controller: _emailController,
-                decoration: new InputDecoration(
-                  labelText: 'Email'
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+  Widget _buildNameLogoCaption() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Image.asset('logo_lockup_flutter_horizontal.png'),
+          Text("Build beautiful native apps in record time"),
+        ],
+      ),
+    );
   }
 
   Widget _buildButtons() {
-    if (_form == FormType.login) {
-      return new Container(
-        child: new Column(
-          children: <Widget>[
-            new RaisedButton(
-              child: new Text('Login'),
-              onPressed: _loginPressed,
-            ),
-            new FlatButton(
-              child: new Text('Forgot Password?'),
-              onPressed: _passwordReset,
-            ),
-            new FlatButton(
-              child: new Text('First Time User SignUP!'),
-              onPressed: _formChange,
-            ),
-          ],
-        ),
-      );
-    } else {
-      return new Container(
-        child: new Column(
-          children: <Widget>[
-            new RaisedButton(
-              child: new Text('Create Account'),
+    return Container(
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            width: 200.0,
+            child: RaisedButton(
+              child: Text('CREATE ACCOUNT'),
               onPressed: _createAccountPressed,
             ),
-            new RaisedButton(
-              child: new Text('Sign in with Facebook'),
-              onPressed: _signinWithFacebookPressed,
+          ),
+          SizedBox(
+            width: 200.0,
+            child: RaisedButton(
+              child: Text('SIGN IN WITH FB'),
+              onPressed: _signinWithFBPressed,
             ),
-            new RaisedButton(
-              child: new Text('Sign in with Google'),
-              onPressed: _signinWithGooglePressed,
+          ),
+          SizedBox(
+            width: 200.0,
+            child: RaisedButton(
+              child: Text('SIGN IN WITH GMAIL'),
+              onPressed: _signinWithGmailPressed,
             ),
-            new FlatButton(
-              child: new Text('Have an account? SIGN IN.'),
-              onPressed: _formChange,
-            )
-          ],
-        ),
+          ),
+          FlatButton(
+            child: Text('HAVE AN ACCOUNT? SIGN IN.'),
+            onPressed: null,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFooter() {
+    return FlatButton(
+      child: Text("BY PROCEEDING YOU AGREE THE TERMS & CONDITIONS*"),
+      onPressed: null
       );
-    }
   }
 
-  // These functions can self contain any user auth logic required, they all have access to _email and _password
-
-  void _loginPressed () {
-    print('The user wants to login with $_username and $_password');
+  void _createAccountPressed() {
+    print('The user wants to create an account');
   }
 
-  void _createAccountPressed () {
-    print('The user wants to create an account with $_username , $_password and $_email');
+  void _signinWithFBPressed() {
+    print('The user wants to signin with FB');
   }
 
-  void _signinWithFacebookPressed () {
-    print('The user wants to signin with FB as $_username and $_password');
+  void _signinWithGmailPressed() {
+    print('The user wants to signin with Gmail');
   }
-
-  void _signinWithGooglePressed () {
-    print('The user wants to signin with Google as $_username and $_password');
-  }
-
-  void _passwordReset () {
-    print("The user wants a password reset request sent to $_username");
-  }
-
 }
 
 void main() => runApp(new RescueMealApp());
